@@ -9,6 +9,10 @@ import SwiftUI
 import RealityKit
 import RealityKitContent
 
+import SwiftUI
+import RealityKit
+import RealityKitContent
+
 struct ContentView: View {
 
     @State private var showImmersiveSpace = false
@@ -16,37 +20,60 @@ struct ContentView: View {
 
     @Environment(\.openImmersiveSpace) var openImmersiveSpace
     @Environment(\.dismissImmersiveSpace) var dismissImmersiveSpace
+    
+    @State private var counter = 0
+    @State private var username: String = ""
+    
+    func startGame() {
+        print("started")
+    }
+    
+    func incrementCounter() {
+        counter = counter + 1
+        print("incremented")
+    }
+    func decrementCounter() {
+        counter = counter - 1
+        print("decremented")
+    }
 
     var body: some View {
         VStack {
-            Model3D(named: "Scene", bundle: realityKitContentBundle)
-                .padding(.bottom, 50)
-
-            Text("Hello, world!")
-
-            Toggle("Show Immersive Space", isOn: $showImmersiveSpace)
-                .toggleStyle(.button)
-                .padding(.top, 50)
+            
+            Text("Up & Down!")
+                .fontWeight(.black)
+                .font(.system(size: 55))
+                .padding()
+            
+            Button(action: incrementCounter, label: {
+                Text("Increment")
+                    .fontWeight(.heavy)
+                    .font(.system(size: 40))
+            })
+            .frame(minWidth: 500, minHeight: 100)
+            .background(.green)
+            .cornerRadius(15)
+            .padding()
+            
+            Button(action: decrementCounter, label: {
+                Text("Decrement")
+                    .fontWeight(.heavy)
+                    .font(.system(size: 40))
+            })
+            .frame(minWidth: 500, minHeight: 100)
+            .background(.red)
+            .cornerRadius(15)
+            .padding()
+            
+            Text("\(counter)")
+                .fontWeight(.black)
+                .font(.system(size: 75))
         }
-        .padding()
-        .onChange(of: showImmersiveSpace) { _, newValue in
-            Task {
-                if newValue {
-                    switch await openImmersiveSpace(id: "ImmersiveSpace") {
-                    case .opened:
-                        immersiveSpaceIsShown = true
-                    case .error, .userCancelled:
-                        fallthrough
-                    @unknown default:
-                        immersiveSpaceIsShown = false
-                        showImmersiveSpace = false
-                    }
-                } else if immersiveSpaceIsShown {
-                    await dismissImmersiveSpace()
-                    immersiveSpaceIsShown = false
-                }
-            }
+        /*
+        .task {
+            await openImmersiveSpace(id: "ImmersiveSpace")
         }
+        */
     }
 }
 
