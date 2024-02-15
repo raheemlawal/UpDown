@@ -1,4 +1,4 @@
-Up Down is a app for Apple's Vision Pro that has two buttons to increment or decrement a counter.
+Up Down is an app for Apple's Vision Pro that has two buttons to increment or decrement a counter.
 
 ---
 
